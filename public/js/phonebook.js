@@ -11,19 +11,12 @@ function getRow(person) {
 
 var persons = [];
 
-$.get("js/mocks/phone-book.json").complete(function () {
-    console.warn("phone book complete", arguments);
-});
-
-console.info("Loading persons");
-
 $.ajax({
-    url: 'js/mocks/phone-book.json'
-
-}).done(function (data) {
-    console.info("done...", data);
-    display(data);
-
+    url: '/phonebook',
+    method: "GET"
+}).done(function (persons) {
+    console.info('done:', persons);
+    display(persons);
 });
 
 function display(persons) {

@@ -3,29 +3,35 @@ var router = express.Router();
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  //TODO
-  res.send('in curand voi da lista');
+    const fs = require ('fs');
+    let rawdata = fs.readFileSync('phonebook.json');
+    let phoneBooks = JSON.parse (rawdata);
+    res.json(phoneBooks);
+});
 
-  router.get('/add',function (req,res,next){
+router.post('/add',function (req,res,next){
       //read
       const fs = require ('fs');
-      let rawdata = fs.readFileSync(".public/js/mocks/phone-book.json");
+      let rawdata = fs.readFileSync('phonebook.json');
       let phoneBooks = JSON.parse (rawdata);
 
-
+let firstName =
       //update
       phoneBooks.push({
-          id :"100",
-          firstName: 'xxx',
-          lastName:'YYY',
-          phone:"876"
+          id :"100", //TODO
+          firstName: req.body.firstName,
+          lastName: req.body.lastName,
+          phone:req.body.phone
       });
       //save
-      let data = JSON.strigify(phoneBooks,null,2);
-      fs.writeFileSync("data/phonebook.json",data);
+      let data = JSON.stringify(phoneBooks, null, 2);
+      fs.writeFileSync('phonebook.json', data);
       //return
-      res.json(phoneBooks)
-  })
+      res.writeHead(301,
+          {Location: '/phonebook.html'}
+          );
+      res.end();
 });
+
 
 module.exports = router;
