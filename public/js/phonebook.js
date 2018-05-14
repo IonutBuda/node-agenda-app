@@ -4,7 +4,7 @@ function getRow(person) {
         '<td>' + person.lastName + '</td>' +
         '<td>' + person.phone + '</td>' +
         `<td>`
-        + `<a href="tmp/remove-contact.html?id=${person.id}">&#10008;</a>`
+        + `<a href="#" data-id='${person.id}' class="delete">&#10008;</a>`
         + "  " + `<a href="#" data-id="${person.id}" class="edit">&#9998;</a></td>` +
         '</tr>'
 }
@@ -15,9 +15,22 @@ $.ajax({
     url: '/phonebook',
     method: "GET"
 }).done(function (persons) {
-    console.info('done:', persons);
     display(persons);
 });
+
+function deleteContact(id) {
+    $.ajax({
+        url: '/phonebook/delete',
+        method: "POST",
+        data : {
+            id: id
+        }
+    }).done(function (persons) {
+        display(persons);
+        console.warn("done", persons);
+    });
+
+}
 
 function display(persons) {
     var rows = '';
@@ -55,6 +68,17 @@ function display(persons) {
         $('input[name=lastName]').val(editPerson.lastName);
         $('input[name=phone]').val(editPerson.phone);
         document.getElementById("buton").innerText = "Save";
+    })
+
+    $("#phone-book tbody a.delete").click(function () {
+        var id = this.attributes["data-id"].value;
+        // var id = $(this).attr("data-id");
+        // var id = $(this).data('id');
+        console.info("click on", this, id);
+
+
+
+        deleteContact(id);
     })
 
 }

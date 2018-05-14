@@ -15,7 +15,8 @@ router.post('/add',function (req,res,next){
       let rawdata = fs.readFileSync('phonebook.json');
       let phoneBooks = JSON.parse (rawdata);
 
-let firstName =
+
+
       //update
       phoneBooks.push({
           id :"100", //TODO
@@ -32,6 +33,25 @@ let firstName =
           );
       res.end();
 });
+
+router.post('/delete',function (req,res,next){
+    //read
+    const fs = require ('fs');
+    let rawdata = fs.readFileSync('phonebook.json');
+    let persons = JSON.parse(rawdata);
+
+    const id = parseInt(req.body.id);
+    persons = persons.filter(function(person){
+        return person.id !==id
+    });
+
+    //save
+    let data = JSON.stringify(persons, null, 2);
+    fs.writeFileSync('phonebook.json', data);
+    //return
+    res.json(persons)
+});
+
 
 
 module.exports = router;
