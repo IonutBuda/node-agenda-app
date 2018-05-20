@@ -32,6 +32,18 @@ function deleteContact(id) {
 
 }
 
+function saveContact(person) {
+    $.ajax({
+        url: '/phonebook/update',
+        method: "POST",
+        data : person
+    }).done(function (persons) {
+        display(persons);
+        console.warn("done", persons);
+    });
+
+}
+
 function display(persons) {
     var rows = '';
 
@@ -58,15 +70,7 @@ function display(persons) {
         // var id = $(this).data('id');
         console.info("click on", this, id);
 
-        var editPerson = persons.find(function (person) {
-            console.log(person.firstName);
-            return person.id == id;
-        });
-        console.warn('edit', editPerson);
-
-        $('input[name=firstName]').val(editPerson.firstName);
-        $('input[name=lastName]').val(editPerson.lastName);
-        $('input[name=phone]').val(editPerson.phone);
+        editContact(id, persons);
         document.getElementById("buton").innerText = "Save";
     })
 
@@ -80,6 +84,30 @@ function display(persons) {
 
         deleteContact(id);
     })
+    function editContact(id, persons) {
+        var editPerson = persons.find(function (person) {
+            console.log(person.firstName);
+            return person.id == id;
+        });
+        console.warn('edit', editPerson);
 
+        $('input[name=firstName]').val(editPerson.firstName);
+        $('input[name=lastName]').val(editPerson.lastName);
+        $('input[name=phone]').val(editPerson.phone);
+
+        $('.add-form').submit(function(event){
+           event.preventDefault();
+           const person = {
+            id: id,
+            firstName: $('input[name=firstName]').val(),
+            lastName: $('input[name=lastName]').val(),
+            phone: $('input[name=phone]').val()
+
+           };
+           saveContact(person);
+
+        } );
+
+    }
 }
 
