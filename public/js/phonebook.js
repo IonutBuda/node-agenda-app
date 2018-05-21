@@ -59,7 +59,6 @@ function deleteContact(id) {
     }).done(function (persons) {
         display(persons);
         console.warn("done", persons);
-        bindEvents(persons);
     });
 
 }
@@ -71,7 +70,6 @@ function saveContact(person) {
         data: person
     }).done(function (persons) {
         display(persons);
-        bindEvents(persons);
         console.warn("done", persons);
     });
 
