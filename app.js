@@ -8,6 +8,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var phoneBookRouter = require('./routes/phonebook');
 var tablaInmultiriiRouter = require('./routes/tabla-inmultirii');
+var agendaRouter = require('./routes/agenda');
 var app = express();
 
 // view engine setup
@@ -24,6 +25,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/phonebook', phoneBookRouter);
 app.use('/tabla-inmultirii', tablaInmultiriiRouter);
+app.use('/agenda', agendaRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

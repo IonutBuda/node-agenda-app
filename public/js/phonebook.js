@@ -1,4 +1,3 @@
-
 function loadContacts() {
     $.ajax({
         url: '/phonebook',
@@ -8,8 +7,6 @@ function loadContacts() {
 
     });
 }
-
-
 
 
 function getRow(person) {
@@ -85,7 +82,7 @@ function getActionRow() {
 }
 
 function bindEvents(persons) {
-    $("#phone-book tbody ").delegate('a.edit',"click",function () {
+    $("#phone-book tbody ").delegate('a.edit', "click", function () {
         var id = this.attributes["data-id"].value;
         // var id = $(this).attr("data-id");
         // var id = $(this).data('id');
@@ -95,7 +92,7 @@ function bindEvents(persons) {
         document.getElementById("buton").innerText = "Save";
     });
 
-    $("#phone-book tbody ").delegate("a.delete","click",function () {
+    $("#phone-book tbody ").delegate("a.delete", "click", function () {
         var id = this.attributes["data-id"].value;
         // var id = $(this).attr("data-id");
         // var id = $(this).data('id');
@@ -108,6 +105,7 @@ function bindEvents(persons) {
 function display(persons) {
     window.persons = persons;
     var rows = '';
+
     function createRows(person) {
         rows += getRow(person);
     };
