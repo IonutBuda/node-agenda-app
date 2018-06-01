@@ -1,6 +1,6 @@
 function loadContacts() {
     $.ajax({
-        url: '/phonebook',
+        url: '/agenda',
         method: "GET"
     }).done(function (persons) {
         display(persons);
