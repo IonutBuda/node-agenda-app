@@ -62,7 +62,7 @@ function deleteContact(id) {
 
 function saveContact(person) {
     $.ajax({
-        url: '/phonebook/update',
+        url: '/agenda/add',
         method: "POST",
         data: person
     }).done(function (persons) {

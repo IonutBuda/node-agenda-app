@@ -21,27 +21,27 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/add', function (req, res, next) {
-    //read
-    const fs = require('fs');
-    let rawdata = fs.readFileSync('phonebook.json');
-    let phoneBooks = JSON.parse(rawdata);
+    var firstName = req.body.firstName;
+    var lastName= req.body.lastName;
+    var phone = req.body.phone;
 
-
-    //update
-    phoneBooks.push({
-        id: new Date().getTime(),
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        phone: req.body.phone
+    var con = mysql.createConnection({
+        host: "localhost",
+        user: "root",
+        password: "",
+        database: "web2"
     });
-    //save
-    let data = JSON.stringify(phoneBooks, null, 2);
-    fs.writeFileSync('phonebook.json', data);
-    //return
-    res.writeHead(301,
-        {Location: '/phonebook.html'}
-    );
-    res.end();
+
+    con.connect(function(err) {
+        if (err) throw err;
+        console.log("Connected!");
+        var sql = `INSERT INTO phone_book (firstName,lastName,phone) VALUES (${firstName}, ${lastName},${phone})`;
+        con.query(sql, function (err, result) {
+            if (err) throw err;
+            console.log("1 record inserted");
+        });
+    });
+
 });
 
 router.post('/delete', function (req, res, next) {
