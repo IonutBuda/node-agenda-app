@@ -48,7 +48,7 @@ function editContact(id) {
 
 function deleteContact(id) {
     $.ajax({
-        url: '/phonebook/delete',
+        url: '/agenda/delete',
         method: "POST",
         data: {
             id: id

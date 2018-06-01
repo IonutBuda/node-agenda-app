@@ -49,21 +49,27 @@ router.post('/add', function (req, res, next) {
 });
 
 router.post('/delete', function (req, res, next) {
-    //read
-    const fs = require('fs');
-    let rawdata = fs.readFileSync('phonebook.json');
-    let persons = JSON.parse(rawdata);
-
-    const id = parseInt(req.body.id);
-    persons = persons.filter(function (person) {
-        return person.id !== id
+    var id =  parseInt(req.body.id);
+    var con = mysql.createConnection({
+        host: "localhost",
+        user: "root",
+        password: "",
+        database: "web2"
     });
 
-    //save
-    let data = JSON.stringify(persons, null, 2);
-    fs.writeFileSync('phonebook.json', data);
-    //return
-    res.json(persons)
+    con.connect(function(err) {
+        if (err) throw err;
+        var sql = `DELETE FROM phone_book WHERE id = "${id}"`;
+        con.query(sql, function (err, result) {
+            if (err) throw err;
+            console.log("Number of records deleted: " + result.affectedRows);
+        });
+        con.query("SELECT * FROM phone_book", function (err, result, fields) {
+            if (err) throw err;
+            console.log(result);
+            res.json(result);
+        });
+    });
 });
 
 router.post('/update', function (req, res, next) {
