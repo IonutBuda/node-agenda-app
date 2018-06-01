@@ -22,7 +22,7 @@ router.get('/', function (req, res, next) {
 
 router.post('/add', function (req, res, next) {
     var firstName = req.body.firstName;
-    var lastName= req.body.lastName;
+    var lastName = req.body.lastName;
     var phone = req.body.phone;
 
     var con = mysql.createConnection({
@@ -35,13 +35,17 @@ router.post('/add', function (req, res, next) {
     con.connect(function(err) {
         if (err) throw err;
         console.log("Connected!");
-        var sql = `INSERT INTO phone_book (firstName,lastName,phone) VALUES (${firstName}, ${lastName},${phone})`;
+        var sql = `INSERT INTO phone_book (firstName,lastName,phone) VALUES ("${firstName}", "${lastName}","${phone}")`;
         con.query(sql, function (err, result) {
             if (err) throw err;
             console.log("1 record inserted");
         });
     });
 
+    res.writeHead(301,
+        {Location: '/phonebook.html'}
+    );
+    res.end();
 });
 
 router.post('/delete', function (req, res, next) {
