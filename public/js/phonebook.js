@@ -53,21 +53,24 @@ function deleteContact(id) {
         data: {
             id: id
         }
-    }).done(function (persons) {
-        display(persons);
-        console.warn("done", persons);
+    }).done(function (response) {
+        if (response.success){
+            loadContacts();
+        };
     });
+
 
 }
 
 function saveContact(person) {
     $.ajax({
-        url: '/agenda/add',
+        url: '/agenda/update',
         method: "POST",
         data: person
-    }).done(function (persons) {
-        display(persons);
-        console.warn("done", persons);
+    }).done(function (response) {
+        if (response.success){
+            loadContacts();
+        };
     });
 
 }
