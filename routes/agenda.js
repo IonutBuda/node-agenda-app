@@ -22,24 +22,26 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/add', function (req, res, next) {
-    const firstName = req.body.firstName;
-    const lastName = req.body.lastName;
-    const phone = req.body.phone;
+
 
 
     pool.getConnection(function(err, connection) {
         if (err) throw err;
+
+        const firstName = req.body.firstName;
+        const lastName = req.body.lastName;
+        const phone = req.body.phone;
+
+
         var sql = `INSERT INTO phone_book (firstName,lastName,phone) VALUES ("${firstName}", "${lastName}","${phone}")`;
         connection.query(sql, function (err, result) {
             connection.release();
             if (err) throw err;
+            res.json({success: true});
         });
     });
 
-    res.writeHead(301,
-        {Location: '/phonebook.html'}
-    );
-    res.end();
+
 });
 
 router.post('/delete', function (req, res, next) {

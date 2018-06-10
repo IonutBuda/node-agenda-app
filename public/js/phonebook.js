@@ -1,3 +1,5 @@
+var editId;
+
 function loadContacts() {
     $.ajax({
         url: '/agenda',
@@ -27,24 +29,21 @@ function editContact(id) {
     });
     console.warn('edit', editPerson);
 
+    if (!editId){
+        $('#phone-book tbody tr:last-child() td:last-child()').append(`<button onclick="cancelEdit(this)">Cancel</button>`)
+    }
+
     $('input[name=firstName]').val(editPerson.firstName);
     $('input[name=lastName]').val(editPerson.lastName);
     $('input[name=phone]').val(editPerson.phone);
-
-    $('.add-form').submit(function (event) {
-        event.preventDefault();
-        const person = {
-            id: id,
-            firstName: $('input[name=firstName]').val(),
-            lastName: $('input[name=lastName]').val(),
-            phone: $('input[name=phone]').val()
-
-        };
-        saveContact(person);
-
-    });
+    editId = id;
 }
 
+function cancelEdit(button) {
+    $('.add-form').get(0).reset();
+    editId="";
+    button.parentNode.removeChild(button);
+}
 
 function deleteContact(id) {
     $.ajax({
@@ -54,9 +53,10 @@ function deleteContact(id) {
             id: id
         }
     }).done(function (response) {
-        if (response.success){
+        if (response.success) {
             loadContacts();
-        };
+        }
+        ;
     });
 
 
@@ -68,13 +68,28 @@ function saveContact(person) {
         method: "POST",
         data: person
     }).done(function (response) {
-        if (response.success){
+        if (response.success) {
+            editId ="";
             loadContacts();
-        };
+        }
+        ;
     });
 
 }
 
+function addContact(person) {
+    $.ajax({
+        url: '/agenda/add',
+        method: "POST",
+        data: person
+    }).done(function (response) {
+        if (response.success) {
+            loadContacts();
+        }
+        ;
+    });
+
+}
 function getActionRow() {
     return '<tr>' +
         '<td><input type="text" name="firstName" required placeholder="Enter first name"></td>' +
@@ -103,6 +118,23 @@ function bindEvents(persons) {
 
         deleteContact(id);
     });
+
+    $('.add-form').submit(function () {
+        const person = {
+            firstName: $('input[name=firstName]').val(),
+            lastName: $('input[name=lastName]').val(),
+            phone: $('input[name=phone]').val()
+        };
+
+        if (editId) {
+            person.id = editId;
+            saveContact(person);
+        } else {
+            addContact(person);
+        }
+
+    });
+
 }
 
 function display(persons) {
