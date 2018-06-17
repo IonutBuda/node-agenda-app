@@ -1,8 +1,15 @@
 var editId;
 
+const API_URL = {
+    CREATE: '/agenda/add',
+    READ: '/agenda',
+    UPDATE: '/agenda/update',
+    DELETE: '/agenda/delete'
+};
+
 function loadContacts() {
     $.ajax({
-        url: '/agenda',
+        url: API_URL.READ,
         method: "GET"
     }).done(function (persons) {
         display(persons);
@@ -47,7 +54,7 @@ function cancelEdit(button) {
 
 function deleteContact(id) {
     $.ajax({
-        url: '/agenda/delete',
+        url: API_URL.DELETE,
         method: "POST",
         data: {
             id: id
@@ -64,7 +71,7 @@ function deleteContact(id) {
 
 function saveContact(person) {
     $.ajax({
-        url: '/agenda/update',
+        url: API_URL.UPDATE,
         method: "POST",
         data: person
     }).done(function (response) {
@@ -79,7 +86,7 @@ function saveContact(person) {
 
 function addContact(person) {
     $.ajax({
-        url: '/agenda/add',
+        url: API_URL.CREATE,
         method: "POST",
         data: person
     }).done(function (response) {
