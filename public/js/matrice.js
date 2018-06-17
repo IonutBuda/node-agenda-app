@@ -5,7 +5,7 @@ function matrix(n) {
             if (j < n - i + 1) {
                 row += '-'
             } else {
-                if ( (j+i)%2 == 0) {
+                if ( (n-j+i)%2 > 0) {
                     row += 'x'
                 } else {
                     row += 'o'
